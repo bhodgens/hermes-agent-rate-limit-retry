@@ -38,6 +38,7 @@ class RateLimitRetryPolicy:
 
     @property
     def enabled(self) -> bool:
+        """Return True when the policy is active (max_retries != 0)."""
         return self.max_retries != 0
 
 
@@ -87,11 +88,6 @@ def policy_backoff_wait(
     policy: RateLimitRetryPolicy,
     retry_index: int,
 ) -> float:
-    """Compute the wait time for policy retry ``retry_index`` (1-based).
-
-    Uses exponential backoff with jitter (±10%) to avoid thundering herd.
-    The result is clamped at ``policy.backoff_max``.
-    """
     """Exponential backoff wait for policy retry ``retry_index`` (1-based).
 
     Adds light uniform jitter (±10%) to decorrelate concurrent sessions
